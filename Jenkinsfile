@@ -5,7 +5,7 @@ pipeline{
         }
     }
     environment{
-        NETLIFY_AUTH_TOKEN = credentials('NETLIFY_AUTH_TOKEN_R')
+        NETLIFY_AUTH_TOKEN = credentials('NETLIFY_AUTH_TOKEN_RD')
         NETLIFY_SITE_ID = credentials('NETLIFY_SITE_ID_RD')
 
     }
