@@ -4,9 +4,10 @@ pipeline{
             image 'node:16.14.2'
         }
     }
-    evironment{
+    environment{
         NETLIFY_AUTH_TOKEN = credentials('NETLIFY_AUTH_TOKEN_R')
         NETLIFY_SITE_ID = credentials('NETLIFY_SITE_ID_RD')
+
     }
     stages{
         stage('Build'){
@@ -21,6 +22,5 @@ pipeline{
                 sh 'npx netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN --dir build/ --prod'
             }
         }
-
     }
 }
