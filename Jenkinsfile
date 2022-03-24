@@ -4,6 +4,10 @@ pipeline{
             image 'node:16.14.2'
         }
     }
+    evironment{
+        NETLIFY_AUTH_TOKEN = credentials('NETLIFY_AUTH_TOKEN_R')
+        NETLIFY_SITE_ID = credentials('NETLIFY_SITE_ID_RD')
+    }
     stages{
         stage('Build'){
             steps{
