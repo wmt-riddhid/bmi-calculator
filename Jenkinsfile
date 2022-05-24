@@ -1,25 +1,33 @@
-pipeline{
-    agent{
-        docker{
-            image 'node:16.14.2'
-        }
-    }
-    environment{
-        NETLIFY_AUTH_TOKEN = credentials('NETLIFY_AUTH_TOKEN_RD')
-        NETLIFY_SITE_ID = credentials('NETLIFY_SITE_ID_RD')
+pipeline {
+    agent any
 
-    }
-    stages{
-        stage('Build'){
-            steps{
-                sh 'npm install'
-                sh 'npm run build'
+    tools {nodejs "node"}
+    // environment {
+    //         CI = 'true'
+    //     }
+    stages {
+
+        stage('check') {
+            steps {
+                sh 'npm config ls'
             }
         }
-        stage('Deliver'){
-            steps{
-                sh 'npm install netlify-cli'
-                sh 'npx netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN --dir build/ --prod'
+
+        stage('Build') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh './jenkins/scripts/test.sh'
+            }
+        }
+        stage('Deliver') {
+            steps {
+                sh './jenkins/scripts/deliver.sh'
+                input message: 'Finished using the web site? (Click "Proceed" to continue)'
+                sh './jenkins/scripts/kill.sh'
             }
         }
     }
